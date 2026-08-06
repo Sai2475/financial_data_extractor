@@ -8,6 +8,7 @@
 **FinExtract AI** is an intelligent, LLM-powered financial news and earnings report analysis application. It automatically extracts key performance metrics—such as **Actual Revenue**, **Expected Revenue**, **Actual EPS**, and **Expected EPS**—from unstructured news articles, quarterly press releases, and earnings reports.
 
 ---
+**To TRY** : https://financial-datas-extractor.streamlit.app/
 
 ## 🌟 Key Features
 
