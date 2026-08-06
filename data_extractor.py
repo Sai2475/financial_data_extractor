@@ -9,16 +9,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-api_key = os.getenv("GROQ_API_KEY")
-if not api_key and hasattr(st, "secrets") and "GROQ_API_KEY" in st.secrets:
-    api_key = st.secrets["GROQ_API_KEY"]
+def extract(article_text, custom_api_key=None):
+    # Resolve API Key
+    api_key = custom_api_key if custom_api_key and custom_api_key.strip() else None
+    
+    if not api_key:
+        api_key = os.getenv("GROQ_API_KEY")
+        
+    if not api_key and hasattr(st, "secrets") and "GROQ_API_KEY" in st.secrets:
+        api_key = st.secrets["GROQ_API_KEY"]
 
-if api_key:
+    if not api_key:
+        raise ValueError(
+            "Groq API Key not found! Please enter your API key in the sidebar or set 'GROQ_API_KEY' in Streamlit secrets / .env file."
+        )
+
     llm = ChatGroq(model="llama-3.3-70b-versatile", groq_api_key=api_key)
-else:
-    llm = ChatGroq(model="llama-3.3-70b-versatile")
 
-def extract(article_text):
     prompt = '''
     From the below news article, extract revenue and eps in JSON format containing the
     following keys: 'revenue_actual', 'revenue_expected', 'eps_actual', 'eps_expected'. 
@@ -34,8 +41,6 @@ def extract(article_text):
 
     pt = PromptTemplate.from_template(prompt)
 
-    global llm
-
     chain = pt | llm
     response = chain.invoke({'article': article_text})
     parser = JsonOutputParser()
@@ -45,4 +50,4 @@ def extract(article_text):
     except OutputParserException:
         raise OutputParserException("Context too big. Unable to parse jobs.")
 
-    return res
+    return res

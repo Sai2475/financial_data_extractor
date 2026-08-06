@@ -111,6 +111,15 @@ with st.sidebar:
     
     st.divider()
     
+    st.subheader("🔑 Groq API Key")
+    groq_api_key_input = st.text_input(
+        "Enter API Key (Optional)",
+        type="password",
+        help="Optional if set in Streamlit Cloud secrets or local .env file."
+    )
+    
+    st.divider()
+    
     st.subheader("💡 How It Works")
     st.markdown("""
     1. **Paste** earnings news text into the input box.
@@ -179,7 +188,7 @@ if extract_btn:
     else:
         with st.spinner("🔍 Analyzing financial report with AI model..."):
             try:
-                extracted_data = extract(paragraph)
+                extracted_data = extract(paragraph, custom_api_key=groq_api_key_input)
                 
                 st.success("✅ Financial metrics successfully extracted!")
                 st.divider()
