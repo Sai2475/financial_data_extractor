@@ -3,10 +3,20 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.exceptions import OutputParserException
 
+import os
+import streamlit as st
 from dotenv import load_dotenv
+
 load_dotenv()
 
-llm = ChatGroq(model="llama-3.3-70b-versatile")
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key and hasattr(st, "secrets") and "GROQ_API_KEY" in st.secrets:
+    api_key = st.secrets["GROQ_API_KEY"]
+
+if api_key:
+    llm = ChatGroq(model="llama-3.3-70b-versatile", groq_api_key=api_key)
+else:
+    llm = ChatGroq(model="llama-3.3-70b-versatile")
 
 def extract(article_text):
     prompt = '''
