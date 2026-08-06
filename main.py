@@ -150,7 +150,7 @@ SAMPLES = {
 }
 
 # Input Section with Quick Sample Selector
-st.markdown('<div class="section-header">📄 Input Financial Article</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">📄 For Example: Input Financial Article</div>', unsafe_allow_html=True)
 
 col_sample1, col_sample2, col_sample3 = st.columns([1, 1, 1])
 if "input_text" not in st.session_state:
